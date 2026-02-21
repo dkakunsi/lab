@@ -15,10 +15,11 @@ help: ## Show this help message
 	@echo ""
 	@echo "Examples:"
 	@echo "  make publish-dev-aio VERSION=1.0.0"
+	@echo "  make publish-ops VERSION=1.0.0"
 	@echo "  make publish-dev-aio REGISTRY=ghcr.io VERSION=1.0.0"
 
 .PHONY: publish-dev-aio
-publish-dev-aio: ## Build and push multi-architecture image
+publish-dev-aio: ## Build and push multi-architecture dev image
 	@echo "Building and pushing multi-architecture Docker image for dev..."
 	docker buildx build \
 		--push \
@@ -28,6 +29,18 @@ publish-dev-aio: ## Build and push multi-architecture image
 		--tag $(REGISTRY)/dkakunsi/lab/dev-aio:latest \
 		./dev
 	@echo "Successfully built and pushed multi-architecture Docker image for dev"
+
+.PHONY: publish-ops
+publish-ops: ## Build and push multi-architecture ops image
+	@echo "Building and pushing multi-architecture Docker image for ops..."
+	docker buildx build \
+		--push \
+		--platform linux/amd64,linux/arm64 \
+		--file ./ops/ops.Dockerfile \
+		--tag $(REGISTRY)/dkakunsi/lab/ops:$(VERSION) \
+		--tag $(REGISTRY)/dkakunsi/lab/ops:latest \
+		./ops
+	@echo "Successfully built and pushed multi-architecture Docker image for ops"
 
 .PHONY: login
 login: ## Login to the Docker registry
