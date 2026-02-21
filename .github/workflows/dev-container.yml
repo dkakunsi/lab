@@ -31,18 +31,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set image variables
-        id: vars
+      - name: Build and push multi-arch image
         run: |
           VERSION="${{ inputs.version || 'latest' }}"
           REGISTRY="ghcr.io"
           
           echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
-          echo "REGISTRY=${REGISTRY}" >> "$GITHUB_ENV"          
-          echo "Full image: ${REGISTRY}/dkakunsi/lab/aio:${VERSION}"
+          echo "REGISTRY=${REGISTRY}" >> "$GITHUB_ENV"
 
-      - name: Build and push multi-arch image
-        run: |
           make publish-dev-aio \
             REGISTRY="${REGISTRY}" \
             VERSION="${VERSION}"

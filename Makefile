@@ -24,8 +24,8 @@ publish-dev-aio: ## Build and push multi-architecture image
 		--push \
 		--platform linux/amd64,linux/arm64 \
 		--file ./dev/aio.Dockerfile \
-		--tag $(REGISTRY)/dkakunsi/lab/aio:$(VERSION) \
-		--tag $(REGISTRY)/dkakunsi/lab/aio:latest \
+		--tag $(REGISTRY)/dkakunsi/lab/dev-aio:$(VERSION) \
+		--tag $(REGISTRY)/dkakunsi/lab/dev-aio:latest \
 		./dev
 	@echo "Successfully built and pushed multi-architecture Docker image for dev"
 
