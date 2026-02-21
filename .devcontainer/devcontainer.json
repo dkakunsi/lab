@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+  "name": "Ubuntu-lab",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": [
+    "--privileged",
+    "-v",
+    "/dev/bus/usb:/dev/bus/usb"
+  ],
+  "mounts": [],
+  "forwardPorts": [
+    8081,
+    5037
+  ],
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "github.copilot",
+        "github.copilot-chat",
+        "ms-vscode-remote.remote-containers",
+        "mhutchie.git-graph"
+      ],
+      "settings": {}
+    }
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "uname -a",
+  // Start Docker daemon and wait for it to be ready
+  "postStartCommand": "bash /workspaces/lab/.devcontainer/start-docker.sh"
+  // Configure tool-specific properties.
+}
