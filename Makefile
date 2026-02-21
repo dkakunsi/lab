@@ -14,20 +14,20 @@ help: ## Show this help message
 	@echo "  VERSION          Image version/tag (default: latest)"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make publish-dev VERSION=1.0.0"
-	@echo "  make publish-dev REGISTRY=ghcr.io VERSION=1.0.0"
+	@echo "  make publish-dev-aio VERSION=1.0.0"
+	@echo "  make publish-dev-aio REGISTRY=ghcr.io VERSION=1.0.0"
 
-.PHONY: publish-dev
-publish-dev: ## Build and push multi-architecture image
-	@echo "Building and pushing multi-architecture Docker image for dev-container..."
+.PHONY: publish-dev-aio
+publish-dev-aio: ## Build and push multi-architecture image
+	@echo "Building and pushing multi-architecture Docker image for dev..."
 	docker buildx build \
 		--push \
 		--platform linux/amd64,linux/arm64 \
-		--file ./dev-container/Dockerfile \
-		--tag $(REGISTRY)/dkakunsi/lab/devcontainer:$(VERSION) \
-		--tag $(REGISTRY)/dkakunsi/lab/devcontainer:latest \
-		./dev-container
-	@echo "Successfully built and pushed multi-architecture Docker image for dev-container"
+		--file ./dev/aio.Dockerfile \
+		--tag $(REGISTRY)/dkakunsi/lab/aio:$(VERSION) \
+		--tag $(REGISTRY)/dkakunsi/lab/aio:latest \
+		./dev
+	@echo "Successfully built and pushed multi-architecture Docker image for dev"
 
 .PHONY: login
 login: ## Login to the Docker registry

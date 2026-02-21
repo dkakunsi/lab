@@ -7,10 +7,6 @@ on:
         description: 'Image version tag'
         required: false
         default: 'latest'
-      registry:
-        description: 'Docker registry'
-        required: false
-        default: 'ghcr.io'
 
 jobs:
 
@@ -31,7 +27,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ inputs.registry || 'ghcr.io' }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,14 +35,14 @@ jobs:
         id: vars
         run: |
           VERSION="${{ inputs.version || 'latest' }}"
-          REGISTRY="${{ inputs.registry || 'ghcr.io' }}"
+          REGISTRY="ghcr.io"
           
           echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
           echo "REGISTRY=${REGISTRY}" >> "$GITHUB_ENV"          
-          echo "Full image: ${REGISTRY}/${IMAGE_NAME}:${VERSION}"
+          echo "Full image: ${REGISTRY}/dkakunsi/lab/aio:${VERSION}"
 
       - name: Build and push multi-arch image
         run: |
-          make publish-dev \
+          make publish-dev-aio \
             REGISTRY="${REGISTRY}" \
             VERSION="${VERSION}"
