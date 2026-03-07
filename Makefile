@@ -18,17 +18,17 @@ help: ## Show this help message
 	@echo "  make publish-ops VERSION=1.0.0"
 	@echo "  make publish-dev-aio REGISTRY=ghcr.io VERSION=1.0.0"
 
-.PHONY: publish-dev-aio
-publish-dev-aio: ## Build and push multi-architecture dev image
-	@echo "Building and pushing multi-architecture Docker image for dev..."
-	docker buildx build \
-		--push \
-		--platform linux/amd64,linux/arm64 \
-		--file ./dev/aio.Dockerfile \
-		--tag $(REGISTRY)/dkakunsi/lab/dev-aio:$(VERSION) \
-		--tag $(REGISTRY)/dkakunsi/lab/dev-aio:latest \
-		./dev
-	@echo "Successfully built and pushed multi-architecture Docker image for dev"
+.PHONY: login
+login: ## Login to the Docker registry
+	@echo "Logging in to registry: $(REGISTRY)"
+	@if [ "$(REGISTRY)" = "ghcr.io" ]; then \
+		echo "For GitHub Container Registry, use: docker login ghcr.io -u USERNAME"; \
+		docker login ghcr.io; \
+	elif [ "$(REGISTRY)" = "docker.io" ]; then \
+		docker login; \
+	else \
+		docker login $(REGISTRY); \
+	fi
 
 .PHONY: publish-ops
 publish-ops: ## Build and push multi-architecture ops image
@@ -42,16 +42,40 @@ publish-ops: ## Build and push multi-architecture ops image
 		./ops
 	@echo "Successfully built and pushed multi-architecture Docker image for ops"
 
-.PHONY: login
-login: ## Login to the Docker registry
-	@echo "Logging in to registry: $(REGISTRY)"
-	@if [ "$(REGISTRY)" = "ghcr.io" ]; then \
-		echo "For GitHub Container Registry, use: docker login ghcr.io -u USERNAME"; \
-		docker login ghcr.io; \
-	elif [ "$(REGISTRY)" = "docker.io" ]; then \
-		docker login; \
-	else \
-		docker login $(REGISTRY); \
-	fi
+.PHONY: publish-dev-aio
+publish-dev-aio: ## Build and push multi-architecture dev image
+	@echo "Building and pushing multi-architecture Docker image for dev..."
+	docker buildx build \
+		--push \
+		--platform linux/amd64,linux/arm64 \
+		--file ./dev/aio.Dockerfile \
+		--tag $(REGISTRY)/dkakunsi/lab/dev-aio:$(VERSION) \
+		--tag $(REGISTRY)/dkakunsi/lab/dev-aio:latest \
+		./dev
+	@echo "Successfully built and pushed multi-architecture Docker image for dev"
+
+.PHONY: publish-java
+publish-java: ## Build and push multi-architecture java image
+	@echo "Building and pushing multi-architecture Docker image for java..."
+	docker buildx build \
+		--push \
+		--platform linux/amd64,linux/arm64 \
+		--file ./java/java.Dockerfile \
+		--tag $(REGISTRY)/dkakunsi/lab/java:$(VERSION) \
+		--tag $(REGISTRY)/dkakunsi/lab/java:latest \
+		./java
+	@echo "Successfully built and pushed multi-architecture Docker image for java"
+
+.PHONY: publish-flutter
+publish-flutter: ## Build and push multi-architecture flutter image
+	@echo "Building and pushing multi-architecture Docker image for flutter..."
+	docker buildx build \
+		--push \
+		--platform linux/amd64,linux/arm64 \
+		--file ./flutter/flutter.Dockerfile \
+		--tag $(REGISTRY)/dkakunsi/lab/flutter:$(VERSION) \
+		--tag $(REGISTRY)/dkakunsi/lab/flutter:latest \
+		./flutter
+	@echo "Successfully built and pushed multi-architecture Docker image for flutter"
 
 .DEFAULT_GOAL := help

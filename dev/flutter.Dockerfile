@@ -1,25 +1,5 @@
 FROM ghcr.io/dkakunsi/lab/ops:1.1
 
-## JAVA AND MAVEN SETUP
-# Install JDK 25 Temurin for Java backend
-# Install JDK 25 Temurin for Flutter
-# Set JAVA_HOME dynamically based on architecture
-RUN bash -c "source ${SDKMAN_DIR}/bin/sdkman-init.sh && \
-    sdk install java 25-tem && \
-    sdk install java 21-tem && \
-    sdk default java 25-tem"
-
-ENV JAVA_HOME="${SDKMAN_DIR}/candidates/java/current"
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
-
-# Install Maven
-RUN bash -c "source ${SDKMAN_DIR}/bin/sdkman-init.sh && \
-    sdk install maven 3.9.12 && \
-    sdk default maven 3.9.12"
-
-ENV MAVEN_HOME="${SDKMAN_DIR}/candidates/maven/current"
-ENV PATH="${MAVEN_HOME}/bin:${PATH}"
-
 # Install Gradle
 RUN bash -c "source ${SDKMAN_DIR}/bin/sdkman-init.sh && \
     sdk install gradle 9.1.0 && \
@@ -59,16 +39,6 @@ RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
     ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" "ndk;27.0.12077973" && \
     git clone https://github.com/flutter/flutter.git -b stable ${FLUTTER_SDK_ROOT} && \
     flutter --disable-analytics
-
-## NODE.JS SETUP
-# Install Node.js 22
-# Install TypeScript and Vite globally
-# RUN mkdir -p /etc/apt/keyrings && \
-#     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-#     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
-#     apt-get update && \
-#     apt-get install -y nodejs && \
-#     npm install -g typescript vite
 
 # Default shell to bash
 SHELL ["/bin/bash", "-c"]

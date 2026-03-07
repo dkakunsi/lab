@@ -50,6 +50,15 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
     apt-get update && \
     apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+## SDKMAN SETUP
+# Install SDKMAN
+ENV SDKMAN_DIR="${INSTALLATION_DIR}/.sdkman"
+RUN curl -s "https://get.sdkman.io" | bash && \
+    bash -c "source ${SDKMAN_DIR}/bin/sdkman-init.sh && sdk version"
+
+ENV PATH="${SDKMAN_DIR}/bin:${PATH}"
+RUN mkdir -p "${SDKMAN_DIR}"
+
 ## AI Agents SETUP
 # Install Copilot CLI
 RUN curl -fsSL https://gh.io/copilot-install | bash
