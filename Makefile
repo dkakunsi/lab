@@ -60,10 +60,10 @@ publish-java: ## Build and push multi-architecture java image
 	docker buildx build \
 		--push \
 		--platform linux/amd64,linux/arm64 \
-		--file ./java/java.Dockerfile \
+		--file ./dev/java.Dockerfile \
 		--tag $(REGISTRY)/dkakunsi/lab/java:$(VERSION) \
 		--tag $(REGISTRY)/dkakunsi/lab/java:latest \
-		./java
+		./dev
 	@echo "Successfully built and pushed multi-architecture Docker image for java"
 
 .PHONY: publish-flutter
@@ -72,10 +72,10 @@ publish-flutter: ## Build and push multi-architecture flutter image
 	docker buildx build \
 		--push \
 		--platform linux/amd64,linux/arm64 \
-		--file ./flutter/flutter.Dockerfile \
+		--file ./dev/flutter.Dockerfile \
 		--tag $(REGISTRY)/dkakunsi/lab/flutter:$(VERSION) \
 		--tag $(REGISTRY)/dkakunsi/lab/flutter:latest \
-		./flutter
+		./dev
 	@echo "Successfully built and pushed multi-architecture Docker image for flutter"
 
 .DEFAULT_GOAL := help
