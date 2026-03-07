@@ -9,33 +9,11 @@ on:
         default: 'latest'
 
 jobs:
-
   build:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/reusable-build-container.yml
+    with:
+      publish_target: publish-ops
+      version: ${{ inputs.version || 'latest' }}
     permissions:
       contents: read
       packages: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push multi-arch ops image
-        run: |
-          VERSION="${{ inputs.version || 'latest' }}"
-          REGISTRY="ghcr.io"
-
-          make publish-ops \
-            REGISTRY="${REGISTRY}" \
-            VERSION="${VERSION}"

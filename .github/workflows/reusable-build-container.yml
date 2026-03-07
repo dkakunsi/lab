@@ -1,0 +1,44 @@
+name: Reusable Build Container
+
+on:
+  workflow_call:
+    inputs:
+      publish_target:
+        description: Target to publish
+        required: true
+        type: string
+      version:
+        description: Image version tag
+        required: false
+        default: latest
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Build and push multi-arch image
+        run: |
+          REGISTRY="ghcr.io"
+
+          make "${{ inputs.publish_target }}" \
+            REGISTRY="${REGISTRY}" \
+            VERSION="${{ inputs.version }}"
