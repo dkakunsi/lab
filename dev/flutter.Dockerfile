@@ -1,5 +1,14 @@
 FROM ghcr.io/dkakunsi/lab/ops:1.1
 
+## JAVA AND MAVEN SETUP
+# Set JAVA_HOME dynamically based on architecture
+RUN bash -c "source ${SDKMAN_DIR}/bin/sdkman-init.sh && \
+    sdk install java 21-tem && \
+    sdk default java 21-tem"
+
+ENV JAVA_HOME="${SDKMAN_DIR}/candidates/java/current"
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
 # Install Gradle
 RUN bash -c "source ${SDKMAN_DIR}/bin/sdkman-init.sh && \
     sdk install gradle 9.1.0 && \
