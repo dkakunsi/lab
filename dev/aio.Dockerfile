@@ -1,4 +1,4 @@
-FROM ghcr.io/dkakunsi/lab/ops:1.1
+FROM ghcr.io/dkakunsi/lab/ops:1.2
 
 ## JAVA AND MAVEN SETUP
 # Install JDK 25 Temurin for Java backend

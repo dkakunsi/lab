@@ -9,7 +9,7 @@
     "--add-host=host.docker.internal:host-gateway"
   ],
   "mounts": [
-    "source=docker,target=/var/lib/docker,type=volume"
+    "type=volume,source=docker,target=/var/lib/docker"
   ],
   "forwardPorts": [
     8081,

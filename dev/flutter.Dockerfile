@@ -1,4 +1,4 @@
-FROM ghcr.io/dkakunsi/lab/ops:1.1
+FROM ghcr.io/dkakunsi/lab/ops:1.2
 
 ## JAVA AND MAVEN SETUP
 # Set JAVA_HOME dynamically based on architecture
