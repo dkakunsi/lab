@@ -1,16 +1,16 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
   "name": "lab-container",
   "build": {
     "dockerfile": "Dockerfile"
   },
   "runArgs": [
-    "--privileged",
     "-v",
-    "/dev/bus/usb:/dev/bus/usb"
+    "/var/run/docker.sock:/var/run/docker.sock",
+    "--add-host=host.docker.internal:host-gateway"
   ],
-  "mounts": [],
+  "mounts": [
+    "source=docker,target=/var/lib/docker,type=volume"
+  ],
   "forwardPorts": [
     8081,
     5037
@@ -28,11 +28,5 @@
       "settings": {}
     }
   },
-  // Features to add to the dev container. More info: https://containers.dev/features.
-  // "features": {},
-  // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "uname -a",
-  // Start Docker daemon and wait for it to be ready
-  "postStartCommand": "bash /workspaces/lab/.devcontainer/start-docker.sh"
-  // Configure tool-specific properties.
+  "postStartCommand": "docker --version"
 }
