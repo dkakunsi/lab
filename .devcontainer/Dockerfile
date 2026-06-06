@@ -49,7 +49,7 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
 
 ## AI Agents SETUP
 # Install Copilot CLI
-RUN curl -fsSL https://gh.io/copilot-install | bash
+# RUN curl -fsSL https://gh.io/copilot-install | bash
 
 # Clean everything
 RUN apt-get clean && \
